@@ -1,7 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -23,12 +26,56 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   Location location = new Location();
+  late bool serviceEnabled;
+  late PermissionStatus permissionStatus;
+  late LocationData locationData;
+  final firebase = Firebase.initializeApp();
+  checkService() async {
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+  }
+
+  checkPermission() async {
+    permissionStatus = await location.hasPermission();
+    if (permissionStatus == PermissionStatus.denied) {
+      permissionStatus = await location.requestPermission();
+      if (permissionStatus != PermissionStatus.granted) {
+        return;
+      }
+    }
+  }
+
+  getLocation() async {
+    locationData = await location.getLocation();
+    location.onLocationChanged.listen((LocationData currentLocation) {
+      // Use current location
+      print(currentLocation.longitude);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkService();
+    checkPermission();
+    getLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("Location"),
+        child: TextButton(
+          onPressed: () {
+            getLocation();
+          },
+          child: Text("Location"),
+        ),
       ),
     );
   }
