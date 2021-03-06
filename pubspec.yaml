@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   location: ^4.0.2
-  firebase_core: ^1.0.0
+  firebase_core: 
   cloud_firestore: ^1.0.0
 
 

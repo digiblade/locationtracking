@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -29,7 +32,7 @@ class _HomepageState extends State<Homepage> {
   late bool serviceEnabled;
   late PermissionStatus permissionStatus;
   late LocationData locationData;
-  final firebase = Firebase.initializeApp();
+  final firebase = FirebaseFirestore.instance;
   checkService() async {
     serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
@@ -55,6 +58,11 @@ class _HomepageState extends State<Homepage> {
     location.onLocationChanged.listen((LocationData currentLocation) {
       // Use current location
       print(currentLocation.longitude);
+      firebase.collection("location").add({
+        "latitude": currentLocation.latitude,
+        "longitude": currentLocation.longitude,
+        "email": "Ak@gmail.com",
+      });
     });
   }
 
