@@ -58,15 +58,15 @@ class _HomepageState extends State<Homepage> {
     location.onLocationChanged.listen((LocationData currentLocation) {
       // Use current location
       print(currentLocation.longitude);
-      firebase
-          .collection("location")
-          .where("email", isEqualTo: "Ak@gmail.com")
-          .get();
-      // firebase.collection("location").add({
-      //   "latitude": currentLocation.latitude,
-      //   "longitude": currentLocation.longitude,
-      //   "email": "Ak@gmail.com",
-      // });
+      // firebase
+      //     .collection("location")
+      //     .where("email", isEqualTo: "Ak@gmail.com")
+      //     .get();
+      firebase.collection("location").add({
+        "latitude": currentLocation.latitude,
+        "longitude": currentLocation.longitude,
+        "email": "Ak1@gmail.com",
+      });
     });
   }
 
@@ -81,14 +81,43 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: TextButton(
-          onPressed: () {
-            getLocation();
-          },
-          child: Text("Location"),
-        ),
-      ),
+      body: StreamBuilder(
+          stream: firebase
+              .collection('location')
+              .where("email", isEqualTo: "Ak1@gmail.com")
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            return ListView(
+              reverse: true,
+              children: snapshot.data!.docs.map((document) {
+                return Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 1.2,
+                    height: MediaQuery.of(context).size.height / 6,
+                    child: ListTile(
+                      title: Text(document['email']),
+                      subtitle: Wrap(
+                        children: [
+                          Text("latitude:" + document['latitude'].toString()),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text("longitude:" + document['longitude'].toString())
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            );
+          }),
     );
   }
 }
