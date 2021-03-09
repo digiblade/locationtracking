@@ -58,11 +58,15 @@ class _HomepageState extends State<Homepage> {
     location.onLocationChanged.listen((LocationData currentLocation) {
       // Use current location
       print(currentLocation.longitude);
-      firebase.collection("location").add({
-        "latitude": currentLocation.latitude,
-        "longitude": currentLocation.longitude,
-        "email": "Ak@gmail.com",
-      });
+      firebase
+          .collection("location")
+          .where("email", isEqualTo: "Ak@gmail.com")
+          .get();
+      // firebase.collection("location").add({
+      //   "latitude": currentLocation.latitude,
+      //   "longitude": currentLocation.longitude,
+      //   "email": "Ak@gmail.com",
+      // });
     });
   }
 
