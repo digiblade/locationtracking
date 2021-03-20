@@ -2,6 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'HomePage.dart';
+import 'LoginPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,9 +13,14 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,104 +29,46 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Homepage extends StatefulWidget {
-  Homepage({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  SplashScreen({Key? key}) : super(key: key);
 
   @override
-  _HomepageState createState() => _HomepageState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _HomepageState extends State<Homepage> {
-  Location location = new Location();
-  late bool serviceEnabled;
-  late PermissionStatus permissionStatus;
-  late LocationData locationData;
-  final firebase = FirebaseFirestore.instance;
-  checkService() async {
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return;
-      }
-    }
-  }
-
-  checkPermission() async {
-    permissionStatus = await location.hasPermission();
-    if (permissionStatus == PermissionStatus.denied) {
-      permissionStatus = await location.requestPermission();
-      if (permissionStatus != PermissionStatus.granted) {
-        return;
-      }
-    }
-  }
-
-  getLocation() async {
-    locationData = await location.getLocation();
-    location.onLocationChanged.listen((LocationData currentLocation) {
-      // Use current location
-      print(currentLocation.longitude);
-      // firebase
-      //     .collection("location")
-      //     .where("email", isEqualTo: "Ak@gmail.com")
-      //     .get();
-      firebase.collection("location").add({
-        "latitude": currentLocation.latitude,
-        "longitude": currentLocation.longitude,
-        "email": "Ak1@gmail.com",
-      });
-    });
-  }
-
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    checkService();
-    checkPermission();
-    getLocation();
+    checkLogin();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
-          stream: firebase
-              .collection('location')
-              .where("email", isEqualTo: "Ak1@gmail.com")
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            return ListView(
-              reverse: true,
-              children: snapshot.data!.docs.map((document) {
-                return Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    height: MediaQuery.of(context).size.height / 6,
-                    child: ListTile(
-                      title: Text(document['email']),
-                      subtitle: Wrap(
-                        children: [
-                          Text("latitude:" + document['latitude'].toString()),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text("longitude:" + document['longitude'].toString())
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            );
-          }),
+      body: Center(
+        child: Text("Location Tracking"),
+      ),
     );
+  }
+
+  checkLogin() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    bool check = pref.getBool("isLogin") ?? false;
+    if (check) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => Homepage(),
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => LoginPage(),
+        ),
+      );
+    }
   }
 }
