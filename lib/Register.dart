@@ -1,23 +1,26 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'HomePage.dart';
-import 'Register.dart';
-// import 'main.dart';
+import 'package:flutter/material.dart';
+import 'package:locationtracking/HomePage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'LoginPage.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController userCtrl = TextEditingController();
   final TextEditingController passCtrl = TextEditingController();
   final auth = FirebaseAuth.instance;
 
   bool obscure = true;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +35,6 @@ class _LoginPageState extends State<LoginPage> {
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-
-            // begin: const FractionalOffset(0.0, 0.0),
-            // end: const FractionalOffset(1.0, 0.0),
-            // stops: [0.0, 1.0],
-            // tileMode: TileMode.clamp,
           ),
         ),
         child: Center(
@@ -51,10 +49,9 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Login ",
+                    "Register",
                     style: TextStyle(
                       fontSize: 24,
-                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -69,8 +66,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       decoration: InputDecoration(
                         hintText: "Username",
-                        hintStyle: TextStyle(color: Colors.white),
                         fillColor: Colors.white,
+                        hintStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4),
                           borderSide: BorderSide(
@@ -165,33 +162,25 @@ class _LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                       // color: Color(0xff040707),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Color(0xff040707),
-                        ),
-                      ),
+                          backgroundColor: MaterialStateProperty.all(
+                        Color(0xff040707),
+                      )),
                       onPressed: () async {
-                        final newUser = await auth.signInWithEmailAndPassword(
-                            email: userCtrl.text, password: passCtrl.text);
-
-                        if (newUser.user!.email != "") {
-                          print(newUser.additionalUserInfo!.username);
-                          // SharedPreferences pref =
-                          //     await SharedPreferences.getInstance();
-                          // pref.setString(
-                          //     "userId", newUser.additionalUserInfo!.username!);
-                          // pref.setBool("islogin", true);
+                        final newUser =
+                            await auth.createUserWithEmailAndPassword(
+                                email: userCtrl.text, password: passCtrl.text);
+                        print(newUser.additionalUserInfo!.profile);
+                        if (newUser.additionalUserInfo!.profile != null) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (BuildContext context) => Homepage(),
                             ),
                           );
-                        } else {
-                          print("nothing");
                         }
                       },
                       child: Text(
-                        "Login",
+                        "Register",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -202,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Don't Have Account?",
+                          "Already Have Account?",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -213,22 +202,45 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    RegisterPage(),
+                                builder: (BuildContext context) => LoginPage(),
                               ),
                             );
                           },
-                          child: Text(
-                            "Sign Up",
+                          child: Text("Sign In"),
+                        )
+                      ],
+                    ),
+                  ),
+                  if (auth.currentUser != null)
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Continue preveious session",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                        )
-                      ],
+                          TextButton(
+                            onPressed: () {
+                              if (auth.currentUser != null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext conetxt) =>
+                                        Homepage(),
+                                  ),
+                                );
+                              }
+                            },
+                            child: Text("Click here"),
+                          )
+                        ],
+                      ),
                     ),
-                  )
                 ],
               ),
             ),
@@ -237,4 +249,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  checkUser(String email) async {}
 }

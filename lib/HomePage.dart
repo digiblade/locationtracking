@@ -44,11 +44,11 @@ class _HomepageState extends State<Homepage> {
       //     .collection("location")
       //     .where("email", isEqualTo: "Ak@gmail.com")
       //     .get();
-      firebase.collection("location").add({
-        "latitude": currentLocation.latitude,
-        "longitude": currentLocation.longitude,
-        "email": "Ak1@gmail.com",
-      });
+      // firebase.collection("location").add({
+      //   "latitude": currentLocation.latitude,
+      //   "longitude": currentLocation.longitude,
+      //   "email": "Ak1@gmail.com",
+      // });
     });
   }
 
