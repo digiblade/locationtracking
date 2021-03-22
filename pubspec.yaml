@@ -16,6 +16,8 @@ dependencies:
   cloud_firestore: ^1.0.0
   shared_preferences: ^2.0.5
   firebase_auth: ^1.0.1
+  google_maps_flutter: ^2.0.1
+  map: ^0.3.0
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
@@ -26,8 +28,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

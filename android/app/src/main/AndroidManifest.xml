@@ -1,8 +1,13 @@
+
+   
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.locationtracking">
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="locationtracking"
         android:icon="@mipmap/ic_launcher">
+         <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyA74dzT-sC5cJ-Yvpmcx_V0tEmm_dtGFss"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

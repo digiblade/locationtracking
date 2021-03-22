@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'HomePage.dart';
 import 'Register.dart';
 // import 'main.dart';
@@ -170,25 +170,25 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onPressed: () async {
-                        final newUser = await auth.signInWithEmailAndPassword(
-                            email: userCtrl.text, password: passCtrl.text);
+                        // final newUser = await auth.signInWithEmailAndPassword(
+                        //     email: userCtrl.text, password: passCtrl.text);
 
-                        if (newUser.user!.email != "") {
-                          print(newUser.additionalUserInfo!.username);
-                          // SharedPreferences pref =
-                          //     await SharedPreferences.getInstance();
-                          // pref.setString(
-                          //     "userId", newUser.additionalUserInfo!.username!);
-                          // pref.setBool("islogin", true);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => Homepage(),
-                            ),
-                          );
-                        } else {
-                          print("nothing");
-                        }
+                        // if (newUser.user!.email != "") {
+                        //   print(newUser.additionalUserInfo!.username);
+                        // SharedPreferences pref =
+                        //     await SharedPreferences.getInstance();
+                        // pref.setString(
+                        //     "userId", newUser.additionalUserInfo!.username!);
+                        // pref.setBool("islogin", true);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => Homepage(),
+                          ),
+                        );
+                        // } else {
+                        //   print("nothing");
+                        // }
                       },
                       child: Text(
                         "Login",

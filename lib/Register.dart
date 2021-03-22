@@ -15,7 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController userCtrl = TextEditingController();
   final TextEditingController passCtrl = TextEditingController();
   final auth = FirebaseAuth.instance;
-
+  final firebase = FirebaseFirestore.instance;
   bool obscure = true;
   @override
   void initState() {
@@ -52,6 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     "Register",
                     style: TextStyle(
                       fontSize: 24,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -166,17 +167,21 @@ class _RegisterPageState extends State<RegisterPage> {
                         Color(0xff040707),
                       )),
                       onPressed: () async {
-                        final newUser =
-                            await auth.createUserWithEmailAndPassword(
-                                email: userCtrl.text, password: passCtrl.text);
-                        print(newUser.additionalUserInfo!.profile);
-                        if (newUser.additionalUserInfo!.profile != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => Homepage(),
-                            ),
-                          );
+                        // final newUser =
+                        //     await auth.createUserWithEmailAndPassword(
+                        //         email: userCtrl.text, password: passCtrl.text);
+                        // print(newUser.additionalUserInfo!.profile);
+                        // if (newUser.additionalUserInfo!.profile != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => Homepage(),
+                          ),
+                        );
+                        // }
+                        int data = await checkUser(userCtrl.text);
+                        if (data == 0) {
+                          addUser(userCtrl.text, passCtrl.text);
                         }
                       },
                       child: Text(
@@ -250,5 +255,19 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  checkUser(String email) async {}
+  checkUser(String email) async {
+    final data = await firebase
+        .collection("user")
+        .where("email", isEqualTo: email)
+        .get();
+    return data.size;
+  }
+
+  addUser(String email, String password) async {
+    firebase.collection("user").doc("email").set({
+      "email": email,
+      "parentemail": "",
+      "password": password,
+    });
+  }
 }
