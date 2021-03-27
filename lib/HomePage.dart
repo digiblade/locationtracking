@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 import 'package:locationtracking/Map.dart';
 
 class Homepage extends StatefulWidget {
@@ -11,54 +11,54 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  Location location = new Location();
-  late bool serviceEnabled;
-  late PermissionStatus permissionStatus;
-  late LocationData locationData;
-  final firebase = FirebaseFirestore.instance;
-  checkService() async {
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return;
-      }
-    }
-  }
+  // Location location = new Location();
+  // late bool serviceEnabled;
+  // late PermissionStatus permissionStatus;
+  // late LocationData locationData;
+  // final firebase = FirebaseFirestore.instance;
+  // checkService() async {
+  //   serviceEnabled = await location.serviceEnabled();
+  //   if (!serviceEnabled) {
+  //     serviceEnabled = await location.requestService();
+  //     if (!serviceEnabled) {
+  //       return;
+  //     }
+  //   }
+  // }
 
-  checkPermission() async {
-    permissionStatus = await location.hasPermission();
-    if (permissionStatus == PermissionStatus.denied) {
-      permissionStatus = await location.requestPermission();
-      if (permissionStatus != PermissionStatus.granted) {
-        return;
-      }
-    }
-  }
+  // checkPermission() async {
+  //   permissionStatus = await location.hasPermission();
+  //   if (permissionStatus == PermissionStatus.denied) {
+  //     permissionStatus = await location.requestPermission();
+  //     if (permissionStatus != PermissionStatus.granted) {
+  //       return;
+  //     }
+  //   }
+  // }
 
-  getLocation() async {
-    locationData = await location.getLocation();
-    location.onLocationChanged.listen((LocationData currentLocation) {
-      // Use current location
-      // print(currentLocation.longitude);
-      // firebase
-      //     .collection("location")
-      //     .where("email", isEqualTo: "Ak@gmail.com")
-      //     .get();
-      // firebase.collection("location").add({
-      //   "latitude": currentLocation.latitude,
-      //   "longitude": currentLocation.longitude,
-      //   "email": "Ak1@gmail.com",
-      // });
-    });
-  }
+  // getLocation() async {
+  //   locationData = await location.getLocation();
+  //   location.onLocationChanged.listen((LocationData currentLocation) {
+  //     // Use current location
+  //     // print(currentLocation.longitude);
+  //     // firebase
+  //     //     .collection("location")
+  //     //     .where("email", isEqualTo: "Ak@gmail.com")
+  //     //     .get();
+  //     // firebase.collection("location").add({
+  //     //   "latitude": currentLocation.latitude,
+  //     //   "longitude": currentLocation.longitude,
+  //     //   "email": "Ak1@gmail.com",
+  //     // });
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    checkService();
-    checkPermission();
-    getLocation();
+    // checkService();
+    // checkPermission();
+    // getLocation();
   }
 
   @override

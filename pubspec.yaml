@@ -11,13 +11,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  location: ^4.0.2
-  firebase_core: 
-  cloud_firestore: ^1.0.0
-  shared_preferences: ^2.0.5
-  firebase_auth: ^1.0.1
+  # location: ^4.0.2
+  # firebase_core: 
+  # cloud_firestore: ^1.0.0
+  # shared_preferences: ^2.0.5
+  # firebase_auth: ^1.0.1
   google_maps_flutter: ^2.0.1
-  map: ^0.3.0
+  # map: ^0.3.0
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

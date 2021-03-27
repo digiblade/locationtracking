@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:locationtracking/HomePage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'LoginPage.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -14,8 +14,8 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController userCtrl = TextEditingController();
   final TextEditingController passCtrl = TextEditingController();
-  final auth = FirebaseAuth.instance;
-  final firebase = FirebaseFirestore.instance;
+  // final auth = FirebaseAuth.instance;
+  // final firebase = FirebaseFirestore.instance;
   bool obscure = true;
   @override
   void initState() {
@@ -179,10 +179,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         );
                         // }
-                        int data = await checkUser(userCtrl.text);
-                        if (data == 0) {
-                          addUser(userCtrl.text, passCtrl.text);
-                        }
+                        // int data = await checkUser(userCtrl.text);
+                        // if (data == 0) {
+                        //   addUser(userCtrl.text, passCtrl.text);
+                        // }
                       },
                       child: Text(
                         "Register",
@@ -216,36 +216,35 @@ class _RegisterPageState extends State<RegisterPage> {
                       ],
                     ),
                   ),
-                  if (auth.currentUser != null)
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "Continue preveious session",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                  // if (auth.currentUser != null)
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Continue preveious session",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
-                          TextButton(
-                            onPressed: () {
-                              if (auth.currentUser != null) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext conetxt) =>
-                                        Homepage(),
-                                  ),
-                                );
-                              }
-                            },
-                            child: Text("Click here"),
-                          )
-                        ],
-                      ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // if (auth.currentUser != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext conetxt) => Homepage(),
+                              ),
+                            );
+                            // }
+                          },
+                          child: Text("Click here"),
+                        )
+                      ],
                     ),
+                  ),
                 ],
               ),
             ),
@@ -255,19 +254,19 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  checkUser(String email) async {
-    final data = await firebase
-        .collection("user")
-        .where("email", isEqualTo: email)
-        .get();
-    return data.size;
-  }
+  // checkUser(String email) async {
+  //   final data = await firebase
+  //       .collection("user")
+  //       .where("email", isEqualTo: email)
+  //       .get();
+  //   return data.size;
+  // }
 
-  addUser(String email, String password) async {
-    firebase.collection("user").doc("email").set({
-      "email": email,
-      "parentemail": "",
-      "password": password,
-    });
-  }
+  // addUser(String email, String password) async {
+  //   firebase.collection("user").doc("email").set({
+  //     "email": email,
+  //     "parentemail": "",
+  //     "password": password,
+  //   });
+  // }
 }

@@ -2,10 +2,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 // import 'package:location/location.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
-import 'HomePage.dart';
-import 'LoginPage.dart';
+// import 'HomePage.dart';
+// import 'LoginPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,22 +53,22 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   checkLogin() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    bool check = pref.getBool("isLogin") ?? false;
-    if (check) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => Homepage(),
-        ),
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => LoginPage(),
-        ),
-      );
-    }
+    // SharedPreferences pref = await SharedPreferences.getInstance();
+    // bool check = pref.getBool("isLogin") ?? false;
+    // if (check) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (BuildContext context) => Homepage(),
+    //     ),
+    //   );
+    // } else {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (BuildContext context) => LoginPage(),
+    //     ),
+    //   );
+    // }
   }
 }
