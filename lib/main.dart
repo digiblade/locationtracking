@@ -1,6 +1,8 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'LoginPage.dart';
 // import 'package:location/location.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,8 +10,8 @@ import 'package:flutter/material.dart';
 // import 'LoginPage.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -63,12 +65,12 @@ class _SplashScreenState extends State<SplashScreen> {
     //     ),
     //   );
     // } else {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (BuildContext context) => LoginPage(),
-    //     ),
-    //   );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => LoginPage(),
+      ),
+    );
     // }
   }
 }
